@@ -2,39 +2,36 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./form";
 import auth from "../services/authService";
-import { Redirect } from "react-router-dom";
 class Login extends Form {
     state = {
         account: {
-            username: "",
+            email_id: "",
             password: "",
         },
         error: {},
     };
     onSubmit = async () => {
         try {
-            const { username, password } = this.state.account;
-            await auth.login(username, password);
-            const { state } = this.props.location;
-            window.location = state ? state.from.pathname : "/";
+            const { email_id, password } = this.state.account;
+            await auth.login(email_id, password);
+            window.location = "/home";
         } catch (ex) {
             console.log(ex.response);
             const error = { ...this.state.error };
-            error.username = ex.response.data;
+            // error.email_id = ex.response.data;
             this.setState({ error });
         }
     };
     schema = {
-        username: Joi.string().required().label("Username"),
+        email_id: Joi.string().email().required().label("Email ID"),
         password: Joi.string().required().label("Password"),
     };
     render() {
-        if (auth.getCurrentUser()) return <Redirect to="/" />;
         return (
             <div>
                 <h1>LOGIN</h1>
                 <form onSubmit={this.HandleSubmit}>
-                    {this.renderInput("username", "Username")}
+                    {this.renderInput("email_id", "Email ID", "email")}
                     {this.renderInput("password", "Password", "password")}
                     {this.renderbutton("Login")}
                 </form>

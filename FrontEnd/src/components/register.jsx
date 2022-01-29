@@ -8,23 +8,23 @@ class RegisterForm extends Form {
         account: {
             username: "",
             password: "",
-            name: "",
+            email_id: "",
         },
         error: {},
     };
     schema = {
-        username: Joi.string().required().email().label("Username"),
+        username: Joi.string().required().label("Username"),
         password: Joi.string().required().min(5).label("Password"),
-        name: Joi.string().required().label("Name"),
+        email_id: Joi.string().email().required().label("Email ID"),
     };
     onSubmit = async () => {
         try {
             const data = await register(this.state.account);
             auth.LoginWithjwt(data.headers["x-auth-token"]);
-            this.props.history.push("/movies");
+            window.location = "/home";
         } catch (ex) {
             const error = { ...this.state.error };
-            error.username = ex.response.data;
+            if (ex.reponse.data) error.username = ex.response.data;
             this.setState({ error });
         }
     };
@@ -33,9 +33,9 @@ class RegisterForm extends Form {
             <div>
                 <h1>Registration Form</h1>
                 <form onSubmit={this.HandleSubmit}>
-                    {this.renderInput("username", "Username", "email")}
+                    {this.renderInput("email_id", "Email ID", "email")}
+                    {this.renderInput("username", "Username")}
                     {this.renderInput("password", "Password", "password")}
-                    {this.renderInput("name", "Name")}
                     {this.renderbutton("register")}
                 </form>
             </div>

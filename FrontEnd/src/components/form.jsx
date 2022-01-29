@@ -46,18 +46,6 @@ class Form extends React.Component {
             </button>
         );
     };
-    renderSelect = (name, label, options) => {
-        return (
-            <Select
-                name={name}
-                label={label}
-                options={options}
-                value={this.state.account[name]}
-                error={this.state.error[name]}
-                onChange={this.handleChange}
-            />
-        );
-    };
     renderInput = (name, label, type = "text") => {
         return (
             <Input

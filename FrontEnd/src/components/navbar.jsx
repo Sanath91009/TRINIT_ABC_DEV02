@@ -5,7 +5,7 @@ const Navbar = (props) => {
         <nav className="navbar navbar-expand-lg navbar-light bg-light mb-3">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">
-                    Vidly
+                    BugTracker
                 </Link>
                 <button
                     className="navbar-toggler"
@@ -24,26 +24,16 @@ const Navbar = (props) => {
                             <NavLink
                                 className="nav-link active"
                                 aria-current="page"
-                                to="/movies"
+                                to="/home"
                             >
-                                Movies
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/customers">
-                                Customers
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/rentals">
-                                Rentals
+                                Home
                             </NavLink>
                         </li>
                         {props.user ? (
                             <React.Fragment>
                                 <li className="nav-item">
                                     <NavLink className="nav-link" to="/profile">
-                                        {props.user.name}
+                                        DashBaord
                                     </NavLink>
                                 </li>
                                 <li className="nav-item">
