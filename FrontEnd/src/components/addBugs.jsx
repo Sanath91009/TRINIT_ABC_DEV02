@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-class Profile extends Component {
+class AddBugs extends Component {
     render() {
         return <div></div>;
     }
 }
 
-export default Profile;
+export default AddBugs;

@@ -37,7 +37,7 @@ class Form extends React.Component {
         const error = this.validate();
         this.setState({ error: error || {} });
         if (error) return;
-        this.onSubmit();
+        this.onSubmit(e);
     };
     renderbutton = (name) => {
         return (

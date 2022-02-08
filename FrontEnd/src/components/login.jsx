@@ -18,7 +18,7 @@ class Login extends Form {
         } catch (ex) {
             console.log(ex.response);
             const error = { ...this.state.error };
-            // error.email_id = ex.response.data;
+            if (ex.response.data) error.email_id = ex.response.data;
             this.setState({ error });
         }
     };

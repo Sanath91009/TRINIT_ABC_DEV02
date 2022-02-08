@@ -1,5 +1,5 @@
 import http from "./httpServices";
-import jwtDecode from "jwt-decode";
+import jwt_decode from "jwt-decode";
 import config from "../config.json";
 const apiEndpoint = config.apiUrl + "/login";
 
@@ -21,7 +21,7 @@ export function getjwt() {
 export function getUser() {
     try {
         const jwt = localStorage.getItem(tokenKey);
-        return jwtDecode(jwt);
+        return jwt_decode(jwt);
     } catch (ex) {
         return null;
     }

@@ -5,17 +5,22 @@ import Navbar from "./components/navbar";
 import Register from "./components/register";
 import Login from "./components/login";
 import Logout from "./components/logout";
-import Profile from "./components/profile";
+import Dashboard from "./components/dashboard";
 import Home from "./components/home";
 import { getUser } from "./services/authService";
 import NotFound from "./components/notfound";
+import CreateNewTeam from "./components/createNewTeam";
+import AddTeamMembers from "./components/addTeamMembers";
+import AddBugs from "./components/addBugs";
+import GetTeams from "./components/getTeams";
+import TeamProfile from "./components/TeamProfile";
 class App extends Component {
     state = {
         user: null,
     };
-    async componentDidMount() {
+    componentDidMount() {
         try {
-            const user = await getUser();
+            const user = getUser();
             this.setState({ user });
         } catch (ex) {
             this.setState({ user: null });
@@ -23,18 +28,34 @@ class App extends Component {
     }
     render() {
         const { user } = this.state;
+        console.log("app.js: ", user);
         return (
             <React.Fragment>
                 <ToastContainer />
                 <div className="fullPage">
                     <Navbar user={user} />
                     <Routes>
+                        <Route path="/TeamProfile" element={<TeamProfile />} />
                         <Route
-                            path="/profile"
+                            path="/createNewTeam"
+                            element={<CreateNewTeam />}
+                        />
+                        <Route
+                            path="/dashboard"
                             element={
-                                user ? <Profile /> : <Navigate to="/login" />
+                                user ? (
+                                    <Dashboard user={user} />
+                                ) : (
+                                    <Navigate to="/login" />
+                                )
                             }
                         />
+                        <Route path="/getTeams" element={<GetTeams />} />
+                        <Route
+                            path="/addTeamMembers"
+                            element={<AddTeamMembers />}
+                        />
+                        <Route path="/addBugs" element={<AddBugs />} />
                         <Route path="/home" element={<Home />} />
                         <Route path="/logout" element={<Logout />} />
                         <Route

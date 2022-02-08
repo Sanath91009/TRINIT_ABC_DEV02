@@ -32,7 +32,10 @@ const Navbar = (props) => {
                         {props.user ? (
                             <React.Fragment>
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" to="/profile">
+                                    <NavLink
+                                        className="nav-link"
+                                        to="/dashboard"
+                                    >
                                         DashBaord
                                     </NavLink>
                                 </li>
