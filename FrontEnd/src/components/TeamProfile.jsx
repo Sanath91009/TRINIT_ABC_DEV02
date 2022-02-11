@@ -134,18 +134,22 @@ class TeamProfile extends Component {
                         })}
                     </tbody>
                 </table>
-                <button
-                    className="btn btn-primary m-2"
-                    onClick={this.HandleClick1}
-                >
-                    Add Employees
-                </button>
-                <button
-                    className="btn btn-primary m-2"
-                    onClick={this.HandleClick2}
-                >
-                    Add bugs
-                </button>
+                {this.state.viewDelete === 1 && (
+                    <React.Fragment>
+                        <button
+                            className="btn btn-primary m-2"
+                            onClick={this.HandleClick1}
+                        >
+                            Add Employees
+                        </button>
+                        <button
+                            className="btn btn-primary m-2"
+                            onClick={this.HandleClick2}
+                        >
+                            Add bugs
+                        </button>
+                    </React.Fragment>
+                )}
             </div>
         );
     }

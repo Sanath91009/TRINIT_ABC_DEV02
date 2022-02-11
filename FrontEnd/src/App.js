@@ -16,6 +16,7 @@ import GetTeams from "./components/getTeams";
 import TeamProfile from "./components/TeamProfile";
 import EditProfle from "./components/EditProfle";
 import EditEmployee from "./components/EditEmployee";
+import ViewAllBugs from "./components/viewAllBugs";
 class App extends Component {
     state = {
         user: null,
@@ -56,6 +57,7 @@ class App extends Component {
                                 )
                             }
                         />
+                        <Route path="/viewAllBugs" element={<ViewAllBugs />} />
                         <Route path="/editProfile" element={<EditProfle />} />
                         <Route path="/getTeams" element={<GetTeams />} />
                         <Route
@@ -71,7 +73,8 @@ class App extends Component {
                         />
                         <Route path="/login" element={<Login />} />
                         <Route path="/notfound" element={<NotFound />} />
-                        <Route path="/" element={<Navigate to="/notfound" />} />
+                        <Route path="/" element={<Navigate to="/home" />} />
+                        <Route path="*" element={<Navigate to="/notfound" />} />
                     </Routes>
                 </div>
             </React.Fragment>

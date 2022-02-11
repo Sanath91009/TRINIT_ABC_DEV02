@@ -23,6 +23,13 @@ export function getRoleOfUser(teamName, emailid) {
         emailid: emailid,
     });
 }
+export function addBug(teamName, bug) {
+    console.log(teamName, bug);
+    return http.post(config.apiUrl + "/addBug", {
+        teamName: teamName,
+        bug: bug,
+    });
+}
 export function editEmployee(idx, teamName, emailid, role) {
     console.log(idx, teamName, emailid, role);
     return http.post(config.apiUrl + "/EditEmployee", {

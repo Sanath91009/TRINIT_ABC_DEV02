@@ -21,6 +21,7 @@ const getTeam = require("./routes/getTeam");
 const getRoleOfUser = require("./routes/getRoleOfUser");
 const DeleteEmployee = require("./routes/DeleteEmployee");
 const EditEmployee = require("./routes/EditEmployee");
+const addBug = require("./routes/addBug");
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/register", users);
@@ -32,6 +33,7 @@ app.use("/getTeam", getTeam);
 app.use("/getRoleOfUser", getRoleOfUser);
 app.use("/deleteEmployee", DeleteEmployee);
 app.use("/EditEmployee", EditEmployee);
+app.use("/addBug", addBug);
 const server = app.listen(5000, () => {
     console.log("on port 5000");
 });

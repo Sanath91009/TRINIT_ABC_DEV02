@@ -1,0 +1,10 @@
+.tags {
+    display: inline;
+    border-radius: 5px;
+    background-color: rgb(216, 216, 216);
+    margin-right: 5px;
+    padding: 4px;
+}
+.tags span {
+    margin-right: 5px;
+}

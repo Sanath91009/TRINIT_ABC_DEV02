@@ -9,7 +9,6 @@ router.post("/", async (req, res) => {
         teamName: req.body.teamName,
         "team_members.Eemail": req.body.emailid,
     });
-    console.log(team);
     let idx = team.team_members.Eemail.indexOf(req.body.emailid);
     console.log("idx : ", idx);
     await Team.updateOne(

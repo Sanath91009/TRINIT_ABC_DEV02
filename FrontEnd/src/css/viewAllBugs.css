@@ -1,0 +1,10 @@
+.bug {
+    border: 15px;
+    background-color: rgb(214, 199, 199);
+    transition: 0.8s;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.bug:hover {
+    transform: scale(1.2, 1.2);
+}

@@ -41,7 +41,11 @@ class AddTeamMembers extends Form {
         }
     };
     HandleClick = () => {
-        this.props.navigate("/addBugs");
+        this.props.navigate("/addBugs", {
+            state: {
+                teamName: this.props.location.state.teamName,
+            },
+        });
     };
     render() {
         return (
