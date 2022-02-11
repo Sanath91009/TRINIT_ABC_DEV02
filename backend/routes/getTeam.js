@@ -3,8 +3,9 @@ const _ = require("lodash");
 const express = require("express");
 const router = express();
 
-router.get("/", async (req, res) => {
-    const team = await Team.find({ teamName: req.body.team });
+router.post("/", async (req, res) => {
+    console.log(req.body);
+    const team = await Team.findOne({ teamName: req.body.teamName });
     return res.status(200).send(team);
 });
 

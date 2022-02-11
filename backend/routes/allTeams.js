@@ -3,9 +3,11 @@ const _ = require("lodash");
 const express = require("express");
 const router = express();
 
-router.get("/", async (req, res) => {
-    console.log("get All teams");
-    const team = await Team.find({ Eemail: req.body.emailid });
+router.post("/", async (req, res) => {
+    console.log("get All teams : ", req.body);
+    const team = await Team.find({
+        "team_members.Eemail": req.body.emailid,
+    });
     console.log("sending : ", team);
     return res.status(200).send(team);
 });

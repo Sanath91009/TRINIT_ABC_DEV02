@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./form";
 import { createTeam } from "../services/teamServices";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { getUser } from "../services/authService";
+import { addEmployee } from "../services/teamServices";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     return <WrappedComponent {...props} navigate={navigate} />;
@@ -12,6 +14,7 @@ class CreateNewTeam extends Form {
         account: {
             teamName: "",
         },
+
         error: {},
     };
     schema = {
@@ -22,13 +25,21 @@ class CreateNewTeam extends Form {
         try {
             const data = await createTeam(this.state.account.teamName);
             console.log("Team Created!!!!!");
+            const user = getUser();
+            const resp = await addEmployee(
+                {
+                    Eemail: user.email_id,
+                    role: "Admin",
+                },
+                this.state.account.teamName
+            );
             this.props.navigate("/addTeamMembers", {
                 state: {
                     teamName: this.state.account.teamName,
                 },
             });
         } catch (ex) {
-            console.log(ex);
+            console.log(ex.response);
         }
     };
     render() {

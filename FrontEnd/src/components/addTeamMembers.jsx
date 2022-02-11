@@ -32,12 +32,12 @@ class AddTeamMembers extends Form {
                 this.props.location.state.teamName
             );
             toast.success("Employee added in team !!");
-            this.setState({ Eemail: "" });
-            this.setState({ role: "" });
             this.setState({ btnName: "Add Another Employee" });
             this.setState({ visible: "True" });
         } catch (ex) {
-            console.log("error", ex);
+            if (ex.response.status === 400) {
+                toast.error(ex.response.data);
+            }
         }
     };
     HandleClick = () => {
@@ -72,7 +72,7 @@ class AddTeamMembers extends Form {
                         onClick={this.HandleClick}
                         style={{ width: "82%" }}
                     >
-                        Next
+                        Add bugs
                     </button>
                 ) : (
                     <span></span>

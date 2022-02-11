@@ -14,6 +14,8 @@ import AddTeamMembers from "./components/addTeamMembers";
 import AddBugs from "./components/addBugs";
 import GetTeams from "./components/getTeams";
 import TeamProfile from "./components/TeamProfile";
+import EditProfle from "./components/EditProfle";
+import EditEmployee from "./components/EditEmployee";
 class App extends Component {
     state = {
         user: null,
@@ -41,6 +43,10 @@ class App extends Component {
                             element={<CreateNewTeam />}
                         />
                         <Route
+                            path="/EditEmployee"
+                            element={<EditEmployee />}
+                        />
+                        <Route
                             path="/dashboard"
                             element={
                                 user ? (
@@ -50,6 +56,7 @@ class App extends Component {
                                 )
                             }
                         />
+                        <Route path="/editProfile" element={<EditProfle />} />
                         <Route path="/getTeams" element={<GetTeams />} />
                         <Route
                             path="/addTeamMembers"

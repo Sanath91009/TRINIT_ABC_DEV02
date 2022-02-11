@@ -12,7 +12,7 @@ class GetTeams extends Component {
         teams: [],
     };
     async componentDidMount() {
-        const user = getUser();
+        const user = await getUser();
         this.setState({ user });
         const { data } = await getAllTeams(user.email_id);
         this.setState({ teams: data });
@@ -20,7 +20,7 @@ class GetTeams extends Component {
     HandleClick(team) {
         this.props.navigate("/TeamProfile", {
             state: {
-                team: team,
+                teamName: team.teamName,
             },
         });
     }
@@ -28,7 +28,7 @@ class GetTeams extends Component {
         return (
             <div>
                 <h1>Hi {this.state.user.username} !!</h1>
-                <table className="table">
+                <table className="table table-hover">
                     <thead>
                         <tr>
                             <th>Team Name</th>
@@ -37,19 +37,18 @@ class GetTeams extends Component {
                     </thead>
                     <tbody>
                         {this.state.teams.map((team) => {
-                            console.log(team.team_members);
-                            console.log(team.team_members.Eemail);
                             return (
                                 <tr
-                                    key={team.teamName}
+                                    style={{ cursor: "pointer" }}
+                                    key={team._id}
                                     onClick={() => this.HandleClick(team)}
                                 >
-                                    <td key={team.teamName}>{team.teamName}</td>
+                                    <td>{team.teamName}</td>
                                     {team.team_members.Eemail.map((email) => {
                                         return (
                                             email ===
                                                 this.state.user.email_id && (
-                                                <td key={team.teamName}>
+                                                <td key={email}>
                                                     {
                                                         team.team_members.role[
                                                             team.team_members.Eemail.indexOf(
