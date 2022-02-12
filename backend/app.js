@@ -22,6 +22,8 @@ const getRoleOfUser = require("./routes/getRoleOfUser");
 const DeleteEmployee = require("./routes/DeleteEmployee");
 const EditEmployee = require("./routes/EditEmployee");
 const addBug = require("./routes/addBug");
+const updateBug = require("./routes/updateBug");
+const deleteBug = require("./routes/deleteBug");
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/register", users);
@@ -34,6 +36,8 @@ app.use("/getRoleOfUser", getRoleOfUser);
 app.use("/deleteEmployee", DeleteEmployee);
 app.use("/EditEmployee", EditEmployee);
 app.use("/addBug", addBug);
+app.use("/updateBug", updateBug);
+app.use("/deleteBug", deleteBug);
 const server = app.listen(5000, () => {
     console.log("on port 5000");
 });

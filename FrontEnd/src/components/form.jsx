@@ -33,9 +33,11 @@ class Form extends React.Component {
         this.setState({ account, error: errors });
     };
     HandleSubmit = (e) => {
+        console.log(this.state.account);
         e.preventDefault();
         const error = this.validate();
         this.setState({ error: error || {} });
+        console.log(error);
         if (error) return;
         this.onSubmit(e);
     };

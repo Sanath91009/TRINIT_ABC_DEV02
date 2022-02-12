@@ -17,6 +17,7 @@ import TeamProfile from "./components/TeamProfile";
 import EditProfle from "./components/EditProfle";
 import EditEmployee from "./components/EditEmployee";
 import ViewAllBugs from "./components/viewAllBugs";
+import ViewBug from "./components/viewBug";
 class App extends Component {
     state = {
         user: null,
@@ -57,6 +58,7 @@ class App extends Component {
                                 )
                             }
                         />
+                        <Route path="/viewBug" element={<ViewBug />} />
                         <Route path="/viewAllBugs" element={<ViewAllBugs />} />
                         <Route path="/editProfile" element={<EditProfle />} />
                         <Route path="/getTeams" element={<GetTeams />} />

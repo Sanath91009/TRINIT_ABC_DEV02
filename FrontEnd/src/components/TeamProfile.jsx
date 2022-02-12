@@ -50,6 +50,13 @@ class TeamProfile extends Component {
             },
         });
     };
+    HandleClick3 = () => {
+        this.props.navigate("/viewAllBugs", {
+            state: {
+                teamName: this.props.location.state.teamName,
+            },
+        });
+    };
     HandleDelete = async (email) => {
         try {
             const teamName = this.props.location.state.teamName;
@@ -148,8 +155,15 @@ class TeamProfile extends Component {
                         >
                             Add bugs
                         </button>
+                        <br></br>
                     </React.Fragment>
                 )}
+                <button
+                    className="btn btn-primary m-2"
+                    onClick={this.HandleClick3}
+                >
+                    View All Bugs
+                </button>
             </div>
         );
     }

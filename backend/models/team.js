@@ -10,7 +10,7 @@ const teamSchema = new mongoose.Schema({
         {
             title: String,
             description: String,
-            VisibleRoles: [String],
+            NonVisibleRoles: [String],
             tags: [String],
             assigned: [String],
         },

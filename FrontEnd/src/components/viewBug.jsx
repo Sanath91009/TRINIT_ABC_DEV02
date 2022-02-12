@@ -2,9 +2,16 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./form";
 import AddTags from "./addTags";
-import { addBug, getTeam } from "../services/teamServices";
+import {
+    addBug,
+    deleteBug,
+    getRoleOfUser,
+    getTeam,
+    updateBug,
+} from "../services/teamServices";
 import { useNavigate, useLocation } from "react-router";
 import { toast } from "react-toastify";
+import { getUser } from "./../services/authService";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -21,10 +28,10 @@ class AddBugs extends Form {
             tags: [],
             assigned: [],
         },
-        btnName: "Add Bug",
         diffRoles: [],
         diffEmp: [],
         error: {},
+        admin: 0,
     };
     schema = {
         title: Joi.string().required().label("Title"),
@@ -36,7 +43,17 @@ class AddBugs extends Form {
     async componentDidMount() {
         const teamName = this.props.location.state.teamName;
         try {
+            const user = getUser();
+            const { data: role } = await getRoleOfUser(teamName, user.email_id);
+
+            if (role === "Admin") this.setState({ admin: 1 });
             const { data: team } = await getTeam(teamName);
+            const bug = { ...team.bugs[this.props.location.state.index] };
+            delete bug._id;
+            console.log(bug);
+            this.setState({
+                account: bug,
+            });
             const diffRoles = team.team_members.role.filter(
                 (role, index) => team.team_members.role.indexOf(role) === index
             );
@@ -49,6 +66,7 @@ class AddBugs extends Form {
 
     HandleEnter = (e) => {
         if (e.key === "Enter") {
+            console.log("entered", e.target.name);
             const tags = [...this.state.account[e.target.name], e.target.value];
             const account = { ...this.state.account };
             e.target.value = "";
@@ -66,22 +84,31 @@ class AddBugs extends Form {
         this.setState({ account });
     };
     onSubmit = async () => {
-        console.log("Submitted");
+        console.log("updated");
         try {
             const teamName = this.props.location.state.teamName;
-            await addBug(teamName, this.state.account);
-            this.setState({ btnName: "Add another bug" });
-            toast.success("Bug Added");
+            const idx = this.props.location.state.index;
+            await updateBug(teamName, this.state.account, idx);
+            toast.success("Bug Updated");
         } catch (ex) {
-            console.log("error in addBugs onSubmit");
+            console.log("error in addBugs onSubmit", ex);
         }
     };
-    HandleClick = () => {
-        this.props.navigate("/viewAllBugs", {
-            state: {
-                teamName: this.props.location.state.teamName,
-            },
-        });
+    HandleClick = async () => {
+        console.log("Deleted");
+        try {
+            const teamName = this.props.location.state.teamName;
+            const index = this.props.location.state.index;
+            await deleteBug(teamName, index);
+            toast.success("Deleted Bug");
+            this.props.navigate("/viewAllBugs", {
+                state: {
+                    teamName: teamName,
+                },
+            });
+        } catch (ex) {
+            console.log("Error in viewBug handleClick", ex);
+        }
     };
     render() {
         return (
@@ -100,8 +127,8 @@ class AddBugs extends Form {
                 <AddTags
                     label={"Roles who Cannot See this Bug"}
                     name={"NonVisibleRoles"}
-                    placeholder="Enter roles"
                     onEnter={this.HandleEnter}
+                    placeholder="Enter your roles"
                     options={this.state.diffRoles}
                     arr={this.state.account.NonVisibleRoles}
                     onRemove={this.HandleRemove}
@@ -109,25 +136,27 @@ class AddBugs extends Form {
                 <AddTags
                     label={"To whom you want to assign this bug"}
                     name={"assigned"}
-                    placeholder="Enter your talents mailid"
                     onEnter={this.HandleEnter}
+                    placeholder="Enter your talents maild"
                     options={this.state.diffEmp}
                     arr={this.state.account.assigned}
                     onRemove={this.HandleRemove}
                 />
-                <button
-                    className="btn btn-primary m-2"
-                    onClick={this.HandleSubmit}
-                >
-                    {this.state.btnName}
-                </button>
-                {this.state.btnName === "Add another bug" && (
-                    <button
-                        className="btn btn-primary m-2"
-                        onClick={this.HandleClick}
-                    >
-                        View All Bugs
-                    </button>
+                {this.state.admin === 1 && (
+                    <React.Fragment>
+                        <button
+                            className="btn btn-primary m-2"
+                            onClick={this.HandleSubmit}
+                        >
+                            Update Bug
+                        </button>
+                        <button
+                            className="btn btn-danger m-2"
+                            onClick={this.HandleClick}
+                        >
+                            Remove Bug
+                        </button>
+                    </React.Fragment>
                 )}
             </div>
         );

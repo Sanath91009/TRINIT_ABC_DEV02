@@ -30,6 +30,19 @@ export function addBug(teamName, bug) {
         bug: bug,
     });
 }
+export function updateBug(teamName, bug, index) {
+    return http.post(config.apiUrl + "/updateBug", {
+        teamName: teamName,
+        bug: bug,
+        index: index,
+    });
+}
+export function deleteBug(teamName, index) {
+    return http.post(config.apiUrl + "/deleteBug", {
+        teamName: teamName,
+        index: index,
+    });
+}
 export function editEmployee(idx, teamName, emailid, role) {
     console.log(idx, teamName, emailid, role);
     return http.post(config.apiUrl + "/EditEmployee", {
