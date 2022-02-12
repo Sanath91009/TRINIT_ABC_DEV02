@@ -43,10 +43,6 @@ class AddBugs extends Form {
     async componentDidMount() {
         const teamName = this.props.location.state.teamName;
         try {
-            const user = getUser();
-            const { data: role } = await getRoleOfUser(teamName, user.email_id);
-
-            if (role === "Admin") this.setState({ admin: 1 });
             const { data: team } = await getTeam(teamName);
             const bug = { ...team.bugs[this.props.location.state.index] };
             delete bug._id;
@@ -142,22 +138,18 @@ class AddBugs extends Form {
                     arr={this.state.account.assigned}
                     onRemove={this.HandleRemove}
                 />
-                {this.state.admin === 1 && (
-                    <React.Fragment>
-                        <button
-                            className="btn btn-primary m-2"
-                            onClick={this.HandleSubmit}
-                        >
-                            Update Bug
-                        </button>
-                        <button
-                            className="btn btn-danger m-2"
-                            onClick={this.HandleClick}
-                        >
-                            Remove Bug
-                        </button>
-                    </React.Fragment>
-                )}
+                <button
+                    className="btn btn-primary m-2"
+                    onClick={this.HandleSubmit}
+                >
+                    Update Bug
+                </button>
+                <button
+                    className="btn btn-danger m-2"
+                    onClick={this.HandleClick}
+                >
+                    Remove Bug
+                </button>
             </div>
         );
     }

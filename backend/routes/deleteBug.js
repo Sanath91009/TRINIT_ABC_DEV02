@@ -16,6 +16,16 @@ router.post("/", async (req, res) => {
             },
         }
     );
+    await Team.updateOne(
+        {
+            teamName: req.body.teamName,
+        },
+        {
+            $pull: {
+                bug: null,
+            },
+        }
+    );
     return res.status(200).send("Deleted");
 });
 

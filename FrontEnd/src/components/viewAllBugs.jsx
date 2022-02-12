@@ -14,7 +14,9 @@ class ViewAllBugs extends Component {
     state = {
         team: null,
         roleofUser: null,
+        admin: 0,
     };
+
     HandleClick2 = () => {
         this.props.navigate("/addBugs", {
             state: {
@@ -23,21 +25,32 @@ class ViewAllBugs extends Component {
         });
     };
     async componentDidMount() {
-        const teamName = this.props.location.state.teamName;
-        const { data: team } = await getTeam(teamName);
-        const user = await getUser();
-        const roleofUser = await getRoleOfUser(teamName, user.email_id);
-        this.setState({ roleofUser });
-        this.setState({ team });
+        try {
+            const teamName = this.props.location.state.teamName;
+            const user = getUser();
+            const { data: roleofUser } = await getRoleOfUser(
+                teamName,
+                user.email_id
+            );
+            if (roleofUser === "Admin") this.setState({ admin: 1 });
+            const { data: team } = await getTeam(teamName);
+            this.setState({ roleofUser });
+            this.setState({ team });
+        } catch (ex) {
+            console.log("Error in view al bugs cdm");
+        }
     }
     HandleClick = (index) => {
-        const teamName = this.props.location.state.teamName;
-        this.props.navigate("/viewBug", {
-            state: {
-                teamName: teamName,
-                index: index,
-            },
-        });
+        console.log(this.state.admin);
+        if (this.state.admin === 1) {
+            const teamName = this.props.location.state.teamName;
+            this.props.navigate("/viewBug", {
+                state: {
+                    teamName: teamName,
+                    index: index,
+                },
+            });
+        }
     };
     render() {
         const teamName = this.props.location.state.teamName;
@@ -58,8 +71,7 @@ class ViewAllBugs extends Component {
                 {team.bugs.map((bug, index) => {
                     if (bug == null) return;
                     const arr = bug.NonVisibleRoles;
-                    let desc = bug.description.slice(0, 100);
-                    if (bug.description.length > 100) desc = desc + "......";
+                    let desc = bug.description;
                     return (
                         arr.find((r) => {
                             return r == this.state.roleofUser;
