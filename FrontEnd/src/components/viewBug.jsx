@@ -1,17 +1,13 @@
 import React, { Component } from "react";
-import Joi from "joi-browser";
-import Form from "./form";
-import AddTags from "./addTags";
-import {
-    addBug,
-    deleteBug,
-    getRoleOfUser,
-    getTeam,
-    updateBug,
-} from "../services/teamServices";
 import { useNavigate, useLocation } from "react-router";
+import ViewBugAdmin from "./viewBugAdmin";
+import ViewBugRem from "./viewBugRem";
+import ViewPosts from "./viewPosts";
+import WritePost from "./WritePost";
+import { getRoleOfUser, getTeam } from "../services/teamServices";
+import { getUser } from "../services/authService";
+import { deletePost } from "../services/teamServices";
 import { toast } from "react-toastify";
-import { getUser } from "./../services/authService";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -19,7 +15,7 @@ const withRouter = (WrappedComponent) => (props) => {
         <WrappedComponent {...props} navigate={navigate} location={location} />
     );
 };
-class AddBugs extends Form {
+class ViewBug extends Component {
     state = {
         account: {
             title: "",
@@ -27,132 +23,100 @@ class AddBugs extends Form {
             NonVisibleRoles: [],
             tags: [],
             assigned: [],
+            posts: [],
         },
-        diffRoles: [],
-        diffEmp: [],
-        error: {},
         admin: 0,
     };
-    schema = {
-        title: Joi.string().required().label("Title"),
-        description: Joi.string().required().label("Description"),
-        NonVisibleRoles: Joi.array(),
-        tags: Joi.array(),
-        assigned: Joi.array(),
-    };
     async componentDidMount() {
-        const teamName = this.props.location.state.teamName;
-        try {
-            const { data: team } = await getTeam(teamName);
-            const bug = { ...team.bugs[this.props.location.state.index] };
-            delete bug._id;
-            console.log(bug);
-            this.setState({
-                account: bug,
-            });
-            const diffRoles = team.team_members.role.filter(
-                (role, index) => team.team_members.role.indexOf(role) === index
-            );
-            this.setState({ diffRoles });
-            this.setState({ diffEmp: team.team_members.Eemail });
-        } catch (ex) {
-            console.log("Error in addBugs CDM");
-        }
-    }
-
-    HandleEnter = (e) => {
-        if (e.key === "Enter") {
-            console.log("entered", e.target.name);
-            const tags = [...this.state.account[e.target.name], e.target.value];
-            const account = { ...this.state.account };
-            e.target.value = "";
-            account[e.target.name] = tags;
-            this.setState({ account });
-        }
-    };
-    HandleRemove = (name, idx) => {
-        let tags = [...this.state.account[name]];
-        tags = tags.filter((tag, index) => {
-            return index != idx;
-        });
-        const account = { ...this.state.account };
-        account[name] = tags;
-        this.setState({ account });
-    };
-    onSubmit = async () => {
-        console.log("updated");
         try {
             const teamName = this.props.location.state.teamName;
             const idx = this.props.location.state.index;
-            await updateBug(teamName, this.state.account, idx);
-            toast.success("Bug Updated");
+            const { data: team } = await getTeam(teamName);
+            const bug = { ...team.bugs[idx] };
+            delete bug._id;
+            this.setState({
+                account: bug,
+            });
+
+            const user = getUser();
+            const { data: roleofUser } = await getRoleOfUser(
+                teamName,
+                user.email_id
+            );
+            if (roleofUser === "Admin") this.setState({ admin: 1 });
         } catch (ex) {
-            console.log("error in addBugs onSubmit", ex);
+            console.log("Error in view al bugs cdm");
         }
-    };
-    HandleClick = async () => {
-        console.log("Deleted");
+    }
+    HandleChange = async () => {
         try {
             const teamName = this.props.location.state.teamName;
-            const index = this.props.location.state.index;
-            await deleteBug(teamName, index);
-            toast.success("Deleted Bug");
-            this.props.navigate("/viewAllBugs", {
-                state: {
-                    teamName: teamName,
-                },
-            });
+            const idx = this.props.location.state.index;
+            const { data: team } = await getTeam(teamName);
+            const account = { ...this.state.account };
+            account.posts = team.bugs[idx].posts;
+            this.setState({ account });
         } catch (ex) {
-            console.log("Error in viewBug handleClick", ex);
+            console.log("error in viewbuf handle change");
+        }
+    };
+    DeleteComment = async (post) => {
+        try {
+            const { teamName, index } = this.props.location.state;
+            await deletePost(teamName, index, post);
+            toast.success("Comment Deleted");
+            const { data: team } = await getTeam(teamName);
+            let account = { ...this.state.account };
+            account.posts = team.bugs[index].posts;
+            this.setState({ account });
+        } catch (ex) {}
+    };
+    handleEdit = () => {
+        this.setState({ admin: 2 });
+    };
+    handleUpdate = async () => {
+        try {
+            const teamName = this.props.location.state.teamName;
+            const idx = this.props.location.state.index;
+            const { data: team } = await getTeam(teamName);
+            let account = { ...this.state.account };
+            account = team.bugs[idx];
+            this.setState({ account });
+            this.setState({ admin: 1 });
+        } catch (ex) {
+            console.log("handle update error ", ex);
         }
     };
     render() {
+        const { teamName, index } = this.props.location.state;
         return (
             <div>
-                {this.renderInput("title", "Title")}
-                {this.renderInput("description", "Description")}
-                <AddTags
-                    label={"Bug Tags"}
-                    name={"tags"}
-                    onEnter={this.HandleEnter}
-                    placeholder="Enter your tags"
-                    options={[]}
-                    arr={this.state.account.tags}
-                    onRemove={this.HandleRemove}
+                {this.state.admin === 2 ? (
+                    <ViewBugAdmin
+                        teamName={teamName}
+                        bugidx={index}
+                        onUpdate={this.handleUpdate}
+                    />
+                ) : (
+                    <ViewBugRem
+                        bug={this.state.account}
+                        admin={this.state.admin}
+                        onEdit={this.handleEdit}
+                    />
+                )}
+                <WritePost
+                    teamName={teamName}
+                    bugidx={index}
+                    onChange={this.HandleChange}
                 />
-                <AddTags
-                    label={"Roles who Cannot See this Bug"}
-                    name={"NonVisibleRoles"}
-                    onEnter={this.HandleEnter}
-                    placeholder="Enter your roles"
-                    options={this.state.diffRoles}
-                    arr={this.state.account.NonVisibleRoles}
-                    onRemove={this.HandleRemove}
+                <ViewPosts
+                    posts={this.state.account.posts}
+                    onDelete={this.DeleteComment}
+                    admin={this.state.admin}
                 />
-                <AddTags
-                    label={"To whom you want to assign this bug"}
-                    name={"assigned"}
-                    onEnter={this.HandleEnter}
-                    placeholder="Enter your talents maild"
-                    options={this.state.diffEmp}
-                    arr={this.state.account.assigned}
-                    onRemove={this.HandleRemove}
-                />
-                <button
-                    className="btn btn-primary m-2"
-                    onClick={this.HandleSubmit}
-                >
-                    Update Bug
-                </button>
-                <button
-                    className="btn btn-danger m-2"
-                    onClick={this.HandleClick}
-                >
-                    Remove Bug
-                </button>
             </div>
         );
     }
 }
 
-export default withRouter(AddBugs);
+export default withRouter(ViewBug);

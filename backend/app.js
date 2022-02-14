@@ -24,6 +24,8 @@ const EditEmployee = require("./routes/EditEmployee");
 const addBug = require("./routes/addBug");
 const updateBug = require("./routes/updateBug");
 const deleteBug = require("./routes/deleteBug");
+const newPost = require("./routes/newPost");
+const deletePost = require("./routes/deletePost");
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/register", users);
@@ -38,6 +40,9 @@ app.use("/EditEmployee", EditEmployee);
 app.use("/addBug", addBug);
 app.use("/updateBug", updateBug);
 app.use("/deleteBug", deleteBug);
+app.use("/newPost", newPost);
+app.use("/deletePost", deletePost);
+
 const server = app.listen(5000, () => {
     console.log("on port 5000");
 });

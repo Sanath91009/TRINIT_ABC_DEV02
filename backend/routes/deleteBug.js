@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
         },
         {
             $pull: {
-                bug: null,
+                bugs: null,
             },
         }
     );

@@ -41,16 +41,13 @@ class ViewAllBugs extends Component {
         }
     }
     HandleClick = (index) => {
-        console.log(this.state.admin);
-        if (this.state.admin === 1) {
-            const teamName = this.props.location.state.teamName;
-            this.props.navigate("/viewBug", {
-                state: {
-                    teamName: teamName,
-                    index: index,
-                },
-            });
-        }
+        const teamName = this.props.location.state.teamName;
+        this.props.navigate("/viewBug", {
+            state: {
+                teamName: teamName,
+                index: index,
+            },
+        });
     };
     render() {
         const teamName = this.props.location.state.teamName;

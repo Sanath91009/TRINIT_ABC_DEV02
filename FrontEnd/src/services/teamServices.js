@@ -30,6 +30,22 @@ export function addBug(teamName, bug) {
         bug: bug,
     });
 }
+export function addPost(teamName, post, bugidx) {
+    console.log(teamName, post);
+    return http.post(config.apiUrl + "/newPost", {
+        teamName: teamName,
+        post: post,
+        index: bugidx,
+    });
+}
+export function deletePost(teamName, index, post) {
+    console.log(index);
+    return http.post(config.apiUrl + "/deletePost", {
+        teamName: teamName,
+        index: index,
+        post: post,
+    });
+}
 export function updateBug(teamName, bug, index) {
     return http.post(config.apiUrl + "/updateBug", {
         teamName: teamName,

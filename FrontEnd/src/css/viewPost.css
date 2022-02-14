@@ -1,0 +1,36 @@
+.post {
+    width: 70%;
+    border-radius: 10px;
+    border: solid;
+}
+.heading {
+    border-radius: 10px 10px 0px 0px;
+    background-color: rgb(24, 223, 223);
+    height: 50px;
+    padding: 10px;
+}
+.time {
+    float: right;
+    margin-right: 20px;
+}
+.remove {
+    border-radius: 50%;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    border: solid 1px;
+    padding: 0.275rem 0.55rem;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    background-color: transparent;
+    float: right;
+    margin-right: 20px;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.remove:hover {
+    background-color: #e0091f;
+}

@@ -13,6 +13,15 @@ const teamSchema = new mongoose.Schema({
             NonVisibleRoles: [String],
             tags: [String],
             assigned: [String],
+            deadline: Date,
+            posts: [
+                {
+                    msg: String,
+                    PostedTime: Date,
+                    Eemail: String,
+                    role: String,
+                },
+            ],
         },
     ],
 });
