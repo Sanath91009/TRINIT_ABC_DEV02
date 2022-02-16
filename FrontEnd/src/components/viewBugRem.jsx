@@ -40,8 +40,8 @@ class ViewBugRem extends Component {
                     );
                 })}
 
-                <hr></hr>
                 <h2>Description</h2>
+                <hr></hr>
                 <p>{bug.description}</p>
             </div>
         );

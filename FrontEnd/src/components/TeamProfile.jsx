@@ -7,11 +7,18 @@ import {
     getRoleOfUser,
     getTeam,
 } from "../services/teamServices";
+import { useParams } from "react-router-dom";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const params = useParams();
     return (
-        <WrappedComponent {...props} navigate={navigate} location={location} />
+        <WrappedComponent
+            {...props}
+            navigate={navigate}
+            location={location}
+            params={params}
+        />
     );
 };
 class TeamProfile extends Component {
@@ -22,7 +29,7 @@ class TeamProfile extends Component {
     async componentDidMount() {
         try {
             const user = await getUser();
-            const teamName = this.props.location.state.teamName;
+            const teamName = this.props.params.teamName;
             const { data: role } = await getRoleOfUser(teamName, user.email_id);
             console.log("role : ", role);
             if (role === "Admin") {
@@ -32,34 +39,23 @@ class TeamProfile extends Component {
             this.setState({ team });
             console.log(team);
         } catch (ex) {
-            console.log("Error in team profile cdm");
+            console.log("Error in team profile cdm", ex, this.props.params);
         }
     }
 
     HandleClick1 = () => {
-        this.props.navigate("/addTeamMembers", {
-            state: {
-                teamName: this.props.location.state.teamName,
-            },
-        });
+        const teamName = this.props.params.teamName;
+        this.props.navigate(`/team/${teamName}/addEmployee`);
     };
     HandleClick2 = () => {
-        this.props.navigate("/addBugs", {
-            state: {
-                teamName: this.props.location.state.teamName,
-            },
-        });
+        this.props.navigate(`/team/${this.props.params.teamName}/addBugs`);
     };
     HandleClick3 = () => {
-        this.props.navigate("/viewAllBugs", {
-            state: {
-                teamName: this.props.location.state.teamName,
-            },
-        });
+        this.props.navigate(`/team/${this.props.params.teamName}/Bugs`);
     };
     HandleDelete = async (email) => {
         try {
-            const teamName = this.props.location.state.teamName;
+            const teamName = this.props.params.teamName;
             console.log("Handle Delete : ", teamName, email);
             await DeleteEmployee(teamName, email);
             const { data: team } = await getTeam(teamName);
@@ -69,12 +65,15 @@ class TeamProfile extends Component {
         }
     };
     HandleUpdate = (email) => {
-        this.props.navigate("/EditEmployee", {
-            state: {
-                teamName: this.props.location.state.teamName,
-                Eemail: email,
-            },
-        });
+        this.props.navigate(
+            `/team/${this.props.params.teamName}/EditEmployee`,
+            {
+                state: {
+                    teamName: this.props.params.teamName,
+                    Eemail: email,
+                },
+            }
+        );
     };
     render() {
         if (this.state.team === null) return <div></div>;

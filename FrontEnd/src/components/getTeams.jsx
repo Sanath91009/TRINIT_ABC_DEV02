@@ -18,11 +18,8 @@ class GetTeams extends Component {
         this.setState({ teams: data });
     }
     HandleClick(team) {
-        this.props.navigate("/TeamProfile", {
-            state: {
-                teamName: team.teamName,
-            },
-        });
+        const teamName = team.teamName;
+        this.props.navigate(`/team/${teamName}`);
     }
     render() {
         return (

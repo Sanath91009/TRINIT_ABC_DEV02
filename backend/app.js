@@ -16,34 +16,25 @@ const users = require("./routes/User.js");
 const allTeams = require("./routes/allTeams.js");
 const auth = require("./routes/auth.js");
 const createTeam = require("./routes/team.js");
-const addEmployee = require("./routes/addEmployee.js");
 const getTeam = require("./routes/getTeam");
 const getRoleOfUser = require("./routes/getRoleOfUser");
-const DeleteEmployee = require("./routes/DeleteEmployee");
-const EditEmployee = require("./routes/EditEmployee");
-const addBug = require("./routes/addBug");
-const updateBug = require("./routes/updateBug");
-const deleteBug = require("./routes/deleteBug");
-const newPost = require("./routes/newPost");
-const deletePost = require("./routes/deletePost");
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/register", users);
 app.use("/login", auth);
 app.use("/createTeam", createTeam);
-app.use("/addEmployee", addEmployee);
 app.use("/getAllTeams", allTeams);
 app.use("/getTeam", getTeam);
 app.use("/getRoleOfUser", getRoleOfUser);
-app.use("/deleteEmployee", DeleteEmployee);
-app.use("/EditEmployee", EditEmployee);
-app.use("/addBug", addBug);
-app.use("/updateBug", updateBug);
-app.use("/deleteBug", deleteBug);
-app.use("/newPost", newPost);
-app.use("/deletePost", deletePost);
+app.use("/bug", require("./routes/bugs"));
+app.use("/employee", require("./routes/employee"));
+app.use("/post", require("./routes/post"));
+app.use("/team", require("./routes/getTeam"));
+app.use("/invitations", require("./routes/invitation"));
 
-const server = app.listen(5000, () => {
-    console.log("on port 5000");
+const port = process.env.PORT || 5000;
+const server = app.listen(port, () => {
+    console.log("on port ", port);
 });
 module.exports = server;

@@ -1,10 +1,16 @@
 const { Team } = require("../models/team");
 const _ = require("lodash");
 const express = require("express");
-var Mongoose = require("mongoose");
 const router = express();
 
-router.post("/", async (req, res) => {
+router.post("/create", async (req, res) => {
+    let team = await Team.findOne({ teamName: req.body.teamName });
+    team.bugs[req.body.index].posts.push(req.body.post);
+    await team.save();
+    return res.status(200).send("post added");
+});
+
+router.post("/delete", async (req, res) => {
     let team = await Team.findOne({
         teamName: req.body.teamName,
     });

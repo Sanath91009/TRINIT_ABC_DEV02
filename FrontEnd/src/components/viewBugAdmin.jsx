@@ -5,11 +5,18 @@ import AddTags from "./addTags";
 import { deleteBug, getTeam, updateBug } from "../services/teamServices";
 import { useNavigate, useLocation } from "react-router";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const params = useParams();
     return (
-        <WrappedComponent {...props} navigate={navigate} location={location} />
+        <WrappedComponent
+            {...props}
+            navigate={navigate}
+            location={location}
+            params={params}
+        />
     );
 };
 class ViewBugAdmin extends Form {
@@ -67,7 +74,7 @@ class ViewBugAdmin extends Form {
     HandleRemove = (name, idx) => {
         let tags = [...this.state.account[name]];
         tags = tags.filter((tag, index) => {
-            return index != idx;
+            return index !== idx;
         });
         const account = { ...this.state.account };
         account[name] = tags;
@@ -76,8 +83,8 @@ class ViewBugAdmin extends Form {
     onSubmit = async () => {
         console.log("updated");
         try {
-            const teamName = this.props.location.state.teamName;
-            const idx = this.props.location.state.index;
+            const teamName = this.props.params.teamName;
+            const idx = this.props.params.index;
             await updateBug(teamName, this.state.account, idx);
             toast.success("Bug Updated");
             this.props.onUpdate();
@@ -91,11 +98,7 @@ class ViewBugAdmin extends Form {
             const { teamName, bugidx } = this.props;
             await deleteBug(teamName, bugidx);
             toast.success("Deleted Bug");
-            this.props.navigate("/viewAllBugs", {
-                state: {
-                    teamName: teamName,
-                },
-            });
+            this.props.navigate(`/team/${this.props.params.teamName}/Bugs`);
         } catch (ex) {
             console.log("Error in viewBug handleClick", ex);
         }

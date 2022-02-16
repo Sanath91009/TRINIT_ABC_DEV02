@@ -3,11 +3,18 @@ import { useNavigate, useLocation } from "react-router";
 import { getRoleOfUser, getTeam } from "../services/teamServices";
 import "../css/viewAllBugs.css";
 import { getUser } from "./../services/authService";
+import { useParams } from "react-router-dom";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const params = useParams();
     return (
-        <WrappedComponent {...props} navigate={navigate} location={location} />
+        <WrappedComponent
+            {...props}
+            navigate={navigate}
+            location={location}
+            params={params}
+        />
     );
 };
 class ViewAllBugs extends Component {
@@ -18,15 +25,11 @@ class ViewAllBugs extends Component {
     };
 
     HandleClick2 = () => {
-        this.props.navigate("/addBugs", {
-            state: {
-                teamName: this.props.location.state.teamName,
-            },
-        });
+        this.props.navigate(`/team/${this.props.params.teamName}/addBugs`);
     };
     async componentDidMount() {
         try {
-            const teamName = this.props.location.state.teamName;
+            const teamName = this.props.params.teamName;
             const user = getUser();
             const { data: roleofUser } = await getRoleOfUser(
                 teamName,
@@ -37,20 +40,15 @@ class ViewAllBugs extends Component {
             this.setState({ roleofUser });
             this.setState({ team });
         } catch (ex) {
-            console.log("Error in view al bugs cdm");
+            console.log("Error in view all bugs cdm");
         }
     }
     HandleClick = (index) => {
-        const teamName = this.props.location.state.teamName;
-        this.props.navigate("/viewBug", {
-            state: {
-                teamName: teamName,
-                index: index,
-            },
-        });
+        const teamName = this.props.params.teamName;
+        this.props.navigate(`/team/${teamName}/Bug/${index}`);
     };
     render() {
-        const teamName = this.props.location.state.teamName;
+        const teamName = this.props.params.teamName;
         if (this.state.team === null) return <div></div>;
         const team = { ...this.state.team };
         console.log(team.bugs);

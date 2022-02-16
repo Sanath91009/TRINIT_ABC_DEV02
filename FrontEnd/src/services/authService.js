@@ -6,8 +6,10 @@ const apiEndpoint = config.apiUrl + "/login";
 const tokenKey = "token";
 http.setjwt(getjwt());
 export async function login(email_id, password) {
-    const { data } = await http.post(apiEndpoint, { email_id, password });
-    localStorage.setItem(tokenKey, data);
+    try {
+        const { data } = await http.post(apiEndpoint, { email_id, password });
+        localStorage.setItem(tokenKey, data);
+    } catch (ex) {}
 }
 export function logout() {
     localStorage.removeItem(tokenKey);

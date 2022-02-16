@@ -3,12 +3,19 @@ import Form from "./form";
 import { addEmployee } from "../services/teamServices";
 import { toast } from "react-toastify";
 import Joi from "joi-browser";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { getUser } from "../services/authService";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const params = useParams();
     return (
-        <WrappedComponent {...props} location={location} navigate={navigate} />
+        <WrappedComponent
+            {...props}
+            location={location}
+            navigate={navigate}
+            params={params}
+        />
     );
 };
 class AddTeamMembers extends Form {
@@ -17,7 +24,7 @@ class AddTeamMembers extends Form {
             Eemail: "",
             role: "",
         },
-        btnName: "Add Employee",
+        btnName: "Send Invitation",
         visible: "False",
         error: {},
     };
@@ -27,12 +34,14 @@ class AddTeamMembers extends Form {
     };
     onSubmit = async () => {
         try {
+            const user = getUser();
             const data = await addEmployee(
                 this.state.account,
-                this.props.location.state.teamName
+                this.props.params.teamName,
+                user.email_id
             );
-            toast.success("Employee added in team !!");
-            this.setState({ btnName: "Add Another Employee" });
+            toast.success("Invitation Sent !!");
+            this.setState({ btnName: "Send Another Invitation" });
             this.setState({ visible: "True" });
         } catch (ex) {
             if (ex.response.status === 400) {
@@ -41,11 +50,7 @@ class AddTeamMembers extends Form {
         }
     };
     HandleClick = () => {
-        this.props.navigate("/addBugs", {
-            state: {
-                teamName: this.props.location.state.teamName,
-            },
-        });
+        this.props.navigate(`/team/${this.props.params.teamName}/addBugs`);
     };
     render() {
         return (

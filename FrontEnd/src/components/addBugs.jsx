@@ -5,11 +5,18 @@ import AddTags from "./addTags";
 import { addBug, getTeam } from "../services/teamServices";
 import { useNavigate, useLocation } from "react-router";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const params = useParams();
     return (
-        <WrappedComponent {...props} navigate={navigate} location={location} />
+        <WrappedComponent
+            {...props}
+            navigate={navigate}
+            location={location}
+            params={params}
+        />
     );
 };
 class AddBugs extends Form {
@@ -34,7 +41,7 @@ class AddBugs extends Form {
         assigned: Joi.array(),
     };
     async componentDidMount() {
-        const teamName = this.props.location.state.teamName;
+        const teamName = this.props.params.teamName;
         try {
             const { data: team } = await getTeam(teamName);
             const diffRoles = team.team_members.role.filter(
@@ -59,7 +66,7 @@ class AddBugs extends Form {
     HandleRemove = (name, idx) => {
         let tags = [...this.state.account[name]];
         tags = tags.filter((tag, index) => {
-            return index != idx;
+            return index !== idx;
         });
         const account = { ...this.state.account };
         account[name] = tags;
@@ -68,7 +75,7 @@ class AddBugs extends Form {
     onSubmit = async () => {
         console.log("Submitted");
         try {
-            const teamName = this.props.location.state.teamName;
+            const teamName = this.props.params.teamName;
             await addBug(teamName, this.state.account);
             this.setState({ btnName: "Add another bug" });
             toast.success("Bug Added");
@@ -77,11 +84,7 @@ class AddBugs extends Form {
         }
     };
     HandleClick = () => {
-        this.props.navigate("/viewAllBugs", {
-            state: {
-                teamName: this.props.location.state.teamName,
-            },
-        });
+        this.props.navigate(`/team/${this.props.params.teamName}/Bugs`);
     };
     render() {
         return (

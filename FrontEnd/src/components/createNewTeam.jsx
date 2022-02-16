@@ -33,11 +33,9 @@ class CreateNewTeam extends Form {
                 },
                 this.state.account.teamName
             );
-            this.props.navigate("/addTeamMembers", {
-                state: {
-                    teamName: this.state.account.teamName,
-                },
-            });
+            this.props.navigate(
+                `/team/${this.state.account.teamName}/addEmployee`
+            );
         } catch (ex) {
             console.log(ex.response);
         }

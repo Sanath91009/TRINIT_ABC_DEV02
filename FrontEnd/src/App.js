@@ -18,6 +18,7 @@ import EditProfle from "./components/EditProfle";
 import EditEmployee from "./components/EditEmployee";
 import ViewAllBugs from "./components/viewAllBugs";
 import ViewBug from "./components/viewBug";
+import PendingInvitations from "./components/PendingInvitations";
 class App extends Component {
     state = {
         user: null,
@@ -39,13 +40,21 @@ class App extends Component {
                 <div className="fullPage">
                     <Navbar user={user} />
                     <Routes>
+                        <Route
+                            path="/pendingInvitations"
+                            element={<PendingInvitations />}
+                        />
                         <Route path="/TeamProfile" element={<TeamProfile />} />
+                        <Route
+                            path="/team/:teamName"
+                            element={<TeamProfile {...this.props} />}
+                        />
                         <Route
                             path="/createNewTeam"
                             element={<CreateNewTeam />}
                         />
                         <Route
-                            path="/EditEmployee"
+                            path="/team/:teamName/EditEmployee"
                             element={<EditEmployee />}
                         />
                         <Route
@@ -58,15 +67,24 @@ class App extends Component {
                                 )
                             }
                         />
-                        <Route path="/viewBug" element={<ViewBug />} />
-                        <Route path="/viewAllBugs" element={<ViewAllBugs />} />
+                        <Route
+                            path="/team/:teamName/Bug/:index"
+                            element={<ViewBug />}
+                        />
+                        <Route
+                            path="/team/:teamName/Bugs"
+                            element={<ViewAllBugs />}
+                        />
                         <Route path="/editProfile" element={<EditProfle />} />
                         <Route path="/getTeams" element={<GetTeams />} />
                         <Route
-                            path="/addTeamMembers"
+                            path="/team/:teamName/addEmployee"
                             element={<AddTeamMembers />}
                         />
-                        <Route path="/addBugs" element={<AddBugs />} />
+                        <Route
+                            path="/team/:teamName/addBugs"
+                            element={<AddBugs />}
+                        />
                         <Route path="/home" element={<Home />} />
                         <Route path="/logout" element={<Logout />} />
                         <Route

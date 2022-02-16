@@ -8,11 +8,18 @@ import { getRoleOfUser, getTeam } from "../services/teamServices";
 import { getUser } from "../services/authService";
 import { deletePost } from "../services/teamServices";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const params = useParams();
     return (
-        <WrappedComponent {...props} navigate={navigate} location={location} />
+        <WrappedComponent
+            {...props}
+            navigate={navigate}
+            location={location}
+            params={params}
+        />
     );
 };
 class ViewBug extends Component {
@@ -29,8 +36,8 @@ class ViewBug extends Component {
     };
     async componentDidMount() {
         try {
-            const teamName = this.props.location.state.teamName;
-            const idx = this.props.location.state.index;
+            const teamName = this.props.params.teamName;
+            const idx = this.props.params.index;
             const { data: team } = await getTeam(teamName);
             const bug = { ...team.bugs[idx] };
             delete bug._id;
@@ -50,8 +57,8 @@ class ViewBug extends Component {
     }
     HandleChange = async () => {
         try {
-            const teamName = this.props.location.state.teamName;
-            const idx = this.props.location.state.index;
+            const teamName = this.props.params.teamName;
+            const idx = this.props.params.index;
             const { data: team } = await getTeam(teamName);
             const account = { ...this.state.account };
             account.posts = team.bugs[idx].posts;
@@ -62,7 +69,7 @@ class ViewBug extends Component {
     };
     DeleteComment = async (post) => {
         try {
-            const { teamName, index } = this.props.location.state;
+            const { teamName, index } = this.props.params;
             await deletePost(teamName, index, post);
             toast.success("Comment Deleted");
             const { data: team } = await getTeam(teamName);
@@ -76,8 +83,8 @@ class ViewBug extends Component {
     };
     handleUpdate = async () => {
         try {
-            const teamName = this.props.location.state.teamName;
-            const idx = this.props.location.state.index;
+            const teamName = this.props.params.teamName;
+            const idx = this.props.params.index;
             const { data: team } = await getTeam(teamName);
             let account = { ...this.state.account };
             account = team.bugs[idx];
@@ -88,7 +95,7 @@ class ViewBug extends Component {
         }
     };
     render() {
-        const { teamName, index } = this.props.location.state;
+        const { teamName, index } = this.props.params;
         return (
             <div>
                 {this.state.admin === 2 ? (

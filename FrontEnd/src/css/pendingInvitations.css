@@ -1,0 +1,27 @@
+.invitation {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(245, 230, 230);
+    transition: 0.8s;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.yes,
+.no {
+    border: none;
+    float: right;
+    margin-right: 10px;
+    border-radius: 40%;
+}
+.yes {
+    background-color: rgb(100, 233, 100);
+}
+.yes:hover {
+    background-color: green;
+}
+.no {
+    background-color: rgb(224, 70, 70);
+}
+.no:hover {
+    background-color: red;
+}

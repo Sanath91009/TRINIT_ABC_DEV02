@@ -32,6 +32,19 @@ class Profile extends Component {
                             </Link>
                         </button>
                     </div>
+                    <div className="p-2 bd-highlight">
+                        <button className="btn btn-primary">
+                            <Link
+                                to="/pendingInvitations"
+                                style={{
+                                    color: "white",
+                                    textDecoration: "None",
+                                }}
+                            >
+                                Check Invitations
+                            </Link>
+                        </button>
+                    </div>
                 </div>
             </div>
         );
