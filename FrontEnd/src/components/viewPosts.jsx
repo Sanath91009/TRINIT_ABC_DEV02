@@ -53,13 +53,13 @@ class ViewPosts extends Component {
             <div className="posts">
                 <h3>Comments</h3>
                 <hr></hr>
-                {posts.map((post) => (
-                    <div className="post m-2">
+                {posts.map((post, index) => (
+                    <div className="post m-2" key={index}>
                         <div className="heading">
                             <span>{post.Eemail}</span>
                             {user.email_id === post.Eemail && (
                                 <button
-                                    class="remove"
+                                    className="remove"
                                     onClick={() => onDelete(post)}
                                 >
                                     -

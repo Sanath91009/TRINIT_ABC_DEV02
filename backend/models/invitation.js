@@ -4,7 +4,7 @@ const InvitationSchema = new mongoose.Schema([
         teamName: String,
         from: String,
         to: String,
-        role: String,
+        role: [String],
     },
 ]);
 const Invitation = mongoose.model("Invitation", InvitationSchema);

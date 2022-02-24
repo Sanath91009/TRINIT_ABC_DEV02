@@ -33,7 +33,7 @@ class App extends Component {
     }
     render() {
         const { user } = this.state;
-        console.log("app.js: ", user);
+
         return (
             <React.Fragment>
                 <ToastContainer />

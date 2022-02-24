@@ -41,19 +41,12 @@ class GetTeams extends Component {
                                     onClick={() => this.HandleClick(team)}
                                 >
                                     <td>{team.teamName}</td>
-                                    {team.team_members.Eemail.map((email) => {
+                                    {team.team_members.map((mem) => {
+                                        let str = mem.role.toString();
                                         return (
-                                            email ===
+                                            mem.Eemail ===
                                                 this.state.user.email_id && (
-                                                <td key={email}>
-                                                    {
-                                                        team.team_members.role[
-                                                            team.team_members.Eemail.indexOf(
-                                                                email
-                                                            )
-                                                        ]
-                                                    }
-                                                </td>
+                                                <td key={mem.Eemail}>{str}</td>
                                             )
                                         );
                                     })}

@@ -1,5 +1,5 @@
-import React, { Component } from "react";
 import Joi from "joi-browser";
+import React from "react";
 import Input from "./input";
 class Form extends React.Component {
     validate = () => {
@@ -33,11 +33,12 @@ class Form extends React.Component {
         this.setState({ account, error: errors });
     };
     HandleSubmit = (e) => {
-        console.log(this.state.account);
         e.preventDefault();
+
         const error = this.validate();
-        this.setState({ error: error || {} });
         console.log(error);
+        this.setState({ error: error || {} });
+
         if (error) return;
         this.onSubmit(e);
     };

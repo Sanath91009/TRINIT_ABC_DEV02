@@ -1,7 +1,7 @@
 import http from "./httpServices";
 import jwt_decode from "jwt-decode";
 import config from "../config.json";
-const apiEndpoint = config.apiUrl + "/login";
+const apiEndpoint = config.apiUrl + "/user/login";
 
 const tokenKey = "token";
 http.setjwt(getjwt());

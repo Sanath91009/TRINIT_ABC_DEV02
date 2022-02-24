@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 class Input extends React.Component {
     render() {

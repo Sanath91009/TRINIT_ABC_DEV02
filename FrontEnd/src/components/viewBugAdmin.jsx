@@ -1,11 +1,11 @@
-import React, { Component } from "react";
 import Joi from "joi-browser";
-import Form from "./form";
-import AddTags from "./addTags";
-import { deleteBug, getTeam, updateBug } from "../services/teamServices";
-import { useNavigate, useLocation } from "react-router";
-import { toast } from "react-toastify";
+import React from "react";
+import { useLocation, useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { deleteBug, getTeam, updateBug } from "../services/teamServices";
+import AddTags from "./addTags";
+import Form from "./form";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -56,14 +56,11 @@ class ViewBugAdmin extends Form {
             );
             this.setState({ diffRoles });
             this.setState({ diffEmp: team.team_members.Eemail });
-        } catch (ex) {
-            console.log("Error in addBugs CDM");
-        }
+        } catch (ex) {}
     }
 
     HandleEnter = (e) => {
         if (e.key === "Enter") {
-            console.log("entered", e.target.name);
             const tags = [...this.state.account[e.target.name], e.target.value];
             const account = { ...this.state.account };
             e.target.value = "";
@@ -81,27 +78,21 @@ class ViewBugAdmin extends Form {
         this.setState({ account });
     };
     onSubmit = async () => {
-        console.log("updated");
         try {
             const teamName = this.props.params.teamName;
             const idx = this.props.params.index;
             await updateBug(teamName, this.state.account, idx);
             toast.success("Bug Updated");
             this.props.onUpdate();
-        } catch (ex) {
-            console.log("error in addBugs onSubmit", ex);
-        }
+        } catch (ex) {}
     };
     HandleClick = async () => {
-        console.log("Deleted");
         try {
             const { teamName, bugidx } = this.props;
             await deleteBug(teamName, bugidx);
             toast.success("Deleted Bug");
             this.props.navigate(`/team/${this.props.params.teamName}/Bugs`);
-        } catch (ex) {
-            console.log("Error in viewBug handleClick", ex);
-        }
+        } catch (ex) {}
     };
     render() {
         return (

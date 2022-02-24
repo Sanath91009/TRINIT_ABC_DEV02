@@ -13,7 +13,7 @@ class ViewBugRem extends Component {
             "info",
         ];
         cn = cn + arr[index % arr.length];
-        console.log(cn);
+
         return cn;
     }
     render() {

@@ -1,10 +1,9 @@
-import React, { Component } from "react";
 import Joi from "joi-browser";
-import Form from "./form";
-import { createTeam } from "../services/teamServices";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../services/authService";
-import { addEmployee } from "../services/teamServices";
+import { addEmployee, createTeam } from "../services/teamServices";
+import Form from "./form";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     return <WrappedComponent {...props} navigate={navigate} />;
@@ -23,15 +22,16 @@ class CreateNewTeam extends Form {
 
     onSubmit = async () => {
         try {
-            const data = await createTeam(this.state.account.teamName);
+            await createTeam(this.state.account.teamName);
             console.log("Team Created!!!!!");
             const user = getUser();
-            const resp = await addEmployee(
+            await addEmployee(
                 {
                     Eemail: user.email_id,
                     role: "Admin",
                 },
-                this.state.account.teamName
+                this.state.account.teamName,
+                user.email_id
             );
             this.props.navigate(
                 `/team/${this.state.account.teamName}/addEmployee`

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { useNavigate, useLocation } from "react-router";
 import Joi from "joi-browser";
-import Form from "./form";
-import { getRoleOfUser, getTeam, editEmployee } from "../services/teamServices";
+import React from "react";
+import { useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { editEmployee, getRoleOfUser, getTeam } from "../services/teamServices";
+import Form from "./form";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     const location = useLocation();

@@ -9,13 +9,10 @@ router.post("/", async (req, res) => {
         "team_members.Email": req.body.emailid,
     });
     if (check) {
-        return res
-            .status(200)
-            .send(
-                check.team_members.role[
-                    check.team_members.Eemail.indexOf(req.body.emailid)
-                ]
-            );
+        let mem = check.team_members.filter((mem) => {
+            return mem.Eemail === req.body.emailid;
+        });
+        return res.status(200).send(mem[0].role);
     }
     return res.status(400).send("There is no employee");
 });

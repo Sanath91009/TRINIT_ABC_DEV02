@@ -32,7 +32,7 @@ class TeamProfile extends Component {
             const teamName = this.props.params.teamName;
             const { data: role } = await getRoleOfUser(teamName, user.email_id);
             console.log("role : ", role);
-            if (role === "Admin") {
+            if (role.find((r) => r === "Admin")) {
                 this.setState({ viewDelete: 1 });
             }
             const { data: team } = await getTeam(teamName);
@@ -98,26 +98,23 @@ class TeamProfile extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {teamz.team_members.Eemail.map((email) => {
+                        {teamz.team_members.map((mem) => {
                             return (
-                                <tr style={{ cursor: "pointer" }} key={email}>
-                                    <td>{email}</td>
-                                    <td>
-                                        {
-                                            teamz.team_members.role[
-                                                teamz.team_members.Eemail.indexOf(
-                                                    email
-                                                )
-                                            ]
-                                        }
-                                    </td>
+                                <tr
+                                    style={{ cursor: "pointer" }}
+                                    key={mem.Eemail}
+                                >
+                                    <td>{mem.Eemail}</td>
+                                    <td>{mem.role.toString()}</td>
                                     {this.state.viewDelete === 1 && (
                                         <React.Fragment>
                                             <td>
                                                 <button
                                                     className="btn btn-info"
                                                     onClick={() =>
-                                                        this.HandleUpdate(email)
+                                                        this.HandleUpdate(
+                                                            mem.Eemail
+                                                        )
                                                     }
                                                 >
                                                     Update Info
@@ -127,7 +124,9 @@ class TeamProfile extends Component {
                                                 <button
                                                     className="btn btn-danger"
                                                     onClick={() =>
-                                                        this.HandleDelete(email)
+                                                        this.HandleDelete(
+                                                            mem.Eemail
+                                                        )
                                                     }
                                                 >
                                                     Delete

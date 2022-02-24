@@ -50,10 +50,10 @@ class ViewBug extends Component {
                 teamName,
                 user.email_id
             );
-            if (roleofUser === "Admin") this.setState({ admin: 1 });
-        } catch (ex) {
-            console.log("Error in view al bugs cdm");
-        }
+
+            if (roleofUser.findIndex((r) => r === "Admin") !== -1)
+                this.setState({ admin: 1 });
+        } catch (ex) {}
     }
     HandleChange = async () => {
         try {
@@ -63,9 +63,7 @@ class ViewBug extends Component {
             const account = { ...this.state.account };
             account.posts = team.bugs[idx].posts;
             this.setState({ account });
-        } catch (ex) {
-            console.log("error in viewbuf handle change");
-        }
+        } catch (ex) {}
     };
     DeleteComment = async (post) => {
         try {
@@ -90,9 +88,7 @@ class ViewBug extends Component {
             account = team.bugs[idx];
             this.setState({ account });
             this.setState({ admin: 1 });
-        } catch (ex) {
-            console.log("handle update error ", ex);
-        }
+        } catch (ex) {}
     };
     render() {
         const { teamName, index } = this.props.params;

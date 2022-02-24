@@ -4,7 +4,6 @@ const express = require("express");
 const router = express();
 
 router.post("/", async (req, res) => {
-    console.log("get All teams : ", req.body);
     const team = await Team.find({
         "team_members.Eemail": req.body.emailid,
     });

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { useNavigate, useLocation } from "react-router";
-import { getRoleOfUser, getTeam } from "../services/teamServices";
-import "../css/viewAllBugs.css";
-import { getUser } from "./../services/authService";
+import { useLocation, useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
+import "../css/viewAllBugs.css";
+import { getRoleOfUser, getTeam } from "../services/teamServices";
+import { getUser } from "./../services/authService";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -64,12 +64,12 @@ class ViewAllBugs extends Component {
                     </button>
                 </div>
                 {team.bugs.map((bug, index) => {
-                    if (bug == null) return;
+                    if (bug === null) return null;
                     const arr = bug.NonVisibleRoles;
                     let desc = bug.description;
                     return (
                         arr.find((r) => {
-                            return r == this.state.roleofUser;
+                            return r === this.state.roleofUser;
                         }) === undefined && (
                             <div
                                 className="bug"

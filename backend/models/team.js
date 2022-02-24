@@ -2,10 +2,13 @@ const mongoose = require("mongoose");
 const teamSchema = new mongoose.Schema({
     teamName: String,
     description: String,
-    team_members: {
-        Eemail: [String],
-        role: [String],
-    },
+    team_members: [
+        {
+            Eemail: String,
+            username: String,
+            role: [String],
+        },
+    ],
     bugs: [
         {
             title: String,
@@ -19,7 +22,6 @@ const teamSchema = new mongoose.Schema({
                     msg: String,
                     PostedTime: Date,
                     Eemail: String,
-                    role: String,
                 },
             ],
         },

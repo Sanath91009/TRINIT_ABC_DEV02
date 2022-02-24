@@ -1,11 +1,11 @@
-import React, { Component } from "react";
 import Joi from "joi-browser";
-import Form from "./form";
-import AddTags from "./addTags";
-import { addBug, getTeam } from "../services/teamServices";
-import { useNavigate, useLocation } from "react-router";
-import { toast } from "react-toastify";
+import React from "react";
+import { useLocation, useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { addBug, getTeam } from "../services/teamServices";
+import AddTags from "./addTags";
+import Form from "./form";
 const withRouter = (WrappedComponent) => (props) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -40,20 +40,6 @@ class AddBugs extends Form {
         tags: Joi.array(),
         assigned: Joi.array(),
     };
-    async componentDidMount() {
-        const teamName = this.props.params.teamName;
-        try {
-            const { data: team } = await getTeam(teamName);
-            const diffRoles = team.team_members.role.filter(
-                (role, index) => team.team_members.role.indexOf(role) === index
-            );
-            this.setState({ diffRoles });
-            this.setState({ diffEmp: team.team_members.Eemail });
-        } catch (ex) {
-            console.log("Error in addBugs CDM");
-        }
-    }
-
     HandleEnter = (e) => {
         if (e.key === "Enter") {
             const tags = [...this.state.account[e.target.name], e.target.value];
@@ -72,16 +58,29 @@ class AddBugs extends Form {
         account[name] = tags;
         this.setState({ account });
     };
+    async componentDidMount() {
+        const teamName = this.props.params.teamName;
+        try {
+            const { data: team } = await getTeam(teamName);
+            let diffRoles = [];
+            for (let i = 0; i < team.team_members.length; i++) {
+                diffRoles = diffRoles.concat(team.team_members[i].role);
+            }
+            const diffEmp = team.team_members.map((mem) => {
+                return mem.Eemail;
+            });
+            this.setState({ diffRoles });
+            this.setState({ diffEmp });
+        } catch (ex) {}
+    }
+
     onSubmit = async () => {
-        console.log("Submitted");
         try {
             const teamName = this.props.params.teamName;
             await addBug(teamName, this.state.account);
             this.setState({ btnName: "Add another bug" });
             toast.success("Bug Added");
-        } catch (ex) {
-            console.log("error in addBugs onSubmit");
-        }
+        } catch (ex) {}
     };
     HandleClick = () => {
         this.props.navigate(`/team/${this.props.params.teamName}/Bugs`);
@@ -98,15 +97,6 @@ class AddBugs extends Form {
                     placeholder="Enter your tags"
                     options={[]}
                     arr={this.state.account.tags}
-                    onRemove={this.HandleRemove}
-                />
-                <AddTags
-                    label={"Roles who Cannot See this Bug"}
-                    name={"NonVisibleRoles"}
-                    placeholder="Enter roles"
-                    onEnter={this.HandleEnter}
-                    options={this.state.diffRoles}
-                    arr={this.state.account.NonVisibleRoles}
                     onRemove={this.HandleRemove}
                 />
                 <AddTags

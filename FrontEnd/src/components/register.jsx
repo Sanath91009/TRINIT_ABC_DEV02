@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Form from "./form";
 import Joi from "joi-browser";
-import { register } from "../services/userService";
+import React from "react";
 import auth from "../services/authService";
+import { register } from "../services/userService";
+import Form from "./form";
 class RegisterForm extends Form {
     state = {
         account: {

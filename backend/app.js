@@ -14,15 +14,13 @@ async function main() {
 }
 const users = require("./routes/User.js");
 const allTeams = require("./routes/allTeams.js");
-const auth = require("./routes/auth.js");
 const createTeam = require("./routes/team.js");
 const getTeam = require("./routes/getTeam");
 const getRoleOfUser = require("./routes/getRoleOfUser");
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use("/register", users);
-app.use("/login", auth);
+app.use("/user", users);
 app.use("/createTeam", createTeam);
 app.use("/getAllTeams", allTeams);
 app.use("/getTeam", getTeam);

@@ -15,9 +15,7 @@ class PendingInvitations extends Component {
             const user = getUser();
             const { data: invitations } = await getInvitations(user.email_id);
             this.setState({ invitations });
-        } catch (ex) {
-            console.log("error in cdm pending invitations", ex);
-        }
+        } catch (ex) {}
     }
     HandleYes = async (invt) => {
         try {
@@ -25,9 +23,7 @@ class PendingInvitations extends Component {
             const user = getUser();
             const { data: invitations } = await getInvitations(user.email_id);
             this.setState({ invitations });
-        } catch (ex) {
-            console.log("error in handle yes");
-        }
+        } catch (ex) {}
     };
     HandleNo = async (invt) => {
         try {
@@ -35,9 +31,7 @@ class PendingInvitations extends Component {
             const user = getUser();
             const { data: invitations } = await getInvitations(user.email_id);
             this.setState({ invitations });
-        } catch (ex) {
-            console.log("error in handle no");
-        }
+        } catch (ex) {}
     };
     render() {
         const invitations = [...this.state.invitations];
@@ -59,7 +53,7 @@ class PendingInvitations extends Component {
                             ></i>
                         </button>
                         <p>From : {invt.from}</p>
-                        <p>Role : {invt.role}</p>
+                        <p>Role : {invt.role.toString()}</p>
                     </div>
                 ))}
             </div>

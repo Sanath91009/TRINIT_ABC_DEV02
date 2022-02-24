@@ -4,7 +4,6 @@ const express = require("express");
 const router = express();
 
 router.post("/create", async (req, res) => {
-    console.log(req.body);
     let team = await Team.findOne({ teamName: req.body.teamName });
     team.bugs.push(req.body.bug);
     await team.save();
@@ -12,7 +11,6 @@ router.post("/create", async (req, res) => {
 });
 
 router.post("/delete", async (req, res) => {
-    console.log(req.body);
     let str = "bugs." + `${req.body.index}`;
     await Team.updateOne(
         {
@@ -38,7 +36,6 @@ router.post("/delete", async (req, res) => {
 });
 
 router.post("/update", async (req, res) => {
-    console.log(req.body);
     let str = "bugs." + `${req.body.index}`;
     await Team.updateOne(
         {
